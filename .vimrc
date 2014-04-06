@@ -4,24 +4,7 @@
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Omnicompletion for c-space
-function! Auto_complete_string()
-    if pumvisible()
-        return "\<C-n>"
-    else
-        return "\<C-x>\<C-o>\<C-r>=Auto_complete_opened()\<CR>"
-    end
-endfunction
-
-function! Auto_complete_opened()
-    if pumvisible()
-        return "\<Down>"
-    end
-    return ""
-endfunction
-
-inoremap <expr> <Nul> Auto_complete_string()
-inoremap <expr> <C-Space> Auto_complete_string()
+" Fix c-space
 "====================================================
 "
 " COLOR
@@ -40,6 +23,8 @@ nnoremap gM 50%
 nnoremap gG 50%
 let g:EasyMotion_leader_key = '<c-s>'
 nmap g<c-s> H<c-s>f<space>
+nmap S :w<cr>
+imap <c-space> <space>
 imap <silent> <C-f> <C-o>l
 imap <silent> <C-b> <C-o>h
 imap <silent> <C-d> <C-o>dl

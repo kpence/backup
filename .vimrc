@@ -21,10 +21,18 @@ au BufReadCmd   *.epub      call zip#Browse(expand("<amatch>"))
 nnoremap gm :call cursor(0, len(getline('.'))/2)<cr>
 nnoremap gM 50%
 nnoremap gG 50%
-let g:EasyMotion_leader_key = '<c-s>'
-nmap g<c-s> H<c-s>f<space>
-nmap S :w<cr>
-imap <c-space> <space>
+let g:EasyMotion_leader_key = '<space>'
+nmap g<space> H<space>f<space>
+nnoremap S :w<cr>
+nnoremap gS :wall<cr>
+nnoremap ZS :wq<cr>
+inoremap <c-space> <space>i
+
+" Insert mode
+" Alts
+imap <silent> <ESC>f <C-o>e
+imap <silent> <ESC>b <C-o>b
+imap <silent> <ESC>d <C-o>de
 imap <silent> <C-f> <C-o>l
 imap <silent> <C-b> <C-o>h
 imap <silent> <C-d> <C-o>dl
@@ -33,29 +41,36 @@ imap <silent> <C-a> <C-o>1\|
 imap <silent> <C-n> <C-o>j
 imap <silent> <C-p> <C-o>k
 imap <silent> <C-k> <C-o>d$
+imap <silent> <C-v> <f5><C-d><f5>
 imap <silent> <C-l> <C-o><C-l><C-h>
 inoremap <silent> <C-y> <C-r>+
+
 " Normal AND UNMAPPED
 "map <silent> <C-s> :w<cr>
 map <silent> <C-q> l
 map <silent> <C-m> l
 vnoremap <C-p> mzdhP
 vnoremap <C-n> dp
-" imap <silent> <C-space> <space>
+
 " Page up page down
-inoremap <ESC>p <C-o><C-u>
-inoremap <ESC>n <C-o><C-d>
 noremap <ESC>p <C-u>
 noremap <ESC>n <C-d>
+inoremap <ESC>p <C-o><C-u>
+inoremap <ESC>n <C-o><C-d>
+
 " map <silent> ; l " HAVEN'T MAPPED IT BECAUSE IT COULD BE ANNOYING
 " nmap <silent> <c-a> <>
 " imap <silent> <a-u> <c-w>
 " imap <silent> <c-y> <c-o><c-y>
 " imap <silent> <c-y> <c-o><c-y>
+
 " Disable help key
-:nmap <F1> :echo<CR>
-:imap <F1> <C-o>:echo<CR>
+nmap <F1> :echo<CR>
+imap <F1> <C-o>:echo<CR>
+
+" -----------------------------------------------------------------------
 " NetRW
+" -----------------------------------------
 " Toggle Vexplore with Ctrl-S
 function! ToggleVExplorer()
   if exists("t:expl_buf_num")
@@ -75,7 +90,9 @@ function! ToggleVExplorer()
       let t:expl_buf_num = bufnr("%")
   endif
 endfunction
-" map <silent> <C-s> :call ToggleVExplorer()<CR>
+
+noremap <silent> <c-s> :call ToggleVExplorer()<CR>
+" -----------------------------------------------------------------------
 
 " Hit enter in the file browser to open the selected
 " file with :vsplit to the right of the browser.
@@ -101,23 +118,28 @@ function! DmenuOpen(cmd)
   endif
   execute a:cmd . " " . fname
 endfunction
+
 " Dmenu tabs
 map <C-t> :call DmenuOpen("tabe")<cr>
-"map <c-s-t> :call DmenuOpen("e")<cr>
+
 " Tab shortcuts
 nnoremap <C-p> :tabprevious<CR>
 nnoremap <C-n> :tabnext<CR>
-" :help statusline
 set nocompatible ruler laststatus=2 showcmd showmode number cmdheight=2
+
 " Search
 set incsearch ignorecase smartcase hlsearch
+
 " Remove useless splash screen
 set shortmess+=l
+
 " Clipboard stuff
 " nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F5>
+
 " Don't redraw while executing macros
 set lazyredraw
+
 " Tab and indent related
 set tabstop=4
 set shiftwidth=4
@@ -127,31 +149,72 @@ set smarttab
 set ai "Auto indent
 set si "Smart indent
 set wrap "Wrap lines
+
 " Always show current position
 set ruler
+
 " Configure backspace so it acts as it should act
 set backspace=eol,start,indent
 set whichwrap+=<,>,h,l
+
 " Enable syntax highlighting
 syntax enable
+
 " Turn on the WiLd menu
 set wildmenu
 set wildignore=*.o,*~,*.pyc
+
 "Map space to search
 "map <space> /
 "map <c-space> ?
+
 " Format the status line
 set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Pos:\ %l,\ %c
+
 " Visual mode pressing * or # searches for the current selection
 vnoremap <silent> * :call VisualSelection('f')<CR>
 vnoremap <silent> # :call VisualSelection('b')<CR>
-" Clear highlights on ^S
+
+" Clear highlights
 noremap <silent> <c-l> :nohls<cr><c-l>
-" Move a line of text with c-j/k
-nmap <C-j> mz:m+<cr>`z
-nmap <C-k> mz:m-2<cr>`z
-vmap <C-j> :m'>+<cr>`<my`>mzgv`yo`z
-vmap <C-k> :m'<-2<cr>`>my`<mzgv`yo`z
+vnoremap <c-l> :<C-U><cr><c-l>gv
+
+" Move a line of text
+nmap <C-j> :<C-U>call RepeatCmd(v:count1, 0)<cr>
+nmap <C-k> :<C-U>call RepeatCmd(v:count1, 1)<cr>
+vmap <C-j> :<C-U>let g:yesyes = v:count1<cr>:call RepeatCmd(g:yesyes, 2)<cr>gv`yo`z
+vmap <C-k> :<C-U>let g:yesyes = v:count1<cr>:call RepeatCmd(g:yesyes, 3)<cr>gv`yo`z
+
+function! RepeatCmd(ii,cmd)
+    let ff = a:ii
+    echo string(ff)
+
+    if a:cmd <= 1
+        execute "normal! mz"
+    elseif a:cmd == 2
+        execute "normal! `<my`>mzgv`yo`z"
+    elseif a:cmd == 3
+        execute "normal! `>my`<mzgv`yo`z"
+    endif
+
+    while ff > 0
+        let ff -= 1
+        if a:cmd == 0
+            execute "m+<cr>`z"
+        elseif a:cmd == 1
+            execute "m-2<cr>`z"
+        elseif a:cmd == 2
+            execute "'<,'>m'>+<cr>`<my`>mzgv`yo`z"
+        elseif a:cmd == 3
+            execute "'<,'>m'<-2<cr>`>my`<mzgv`yo`z"
+        endif
+    endwhile
+
+endfunction
+
+"vmap <C-j> :m'>+<cr>`<my`>mzgv`yo`z
+"vmap <C-k> :m'<-2<cr>`>my`<mzgv`yo`z
+
 " Delete trailing white space on save
 func! DeleteTrailingWS()
   exe "normal mz"

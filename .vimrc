@@ -2,35 +2,39 @@
 " TODO Make map that enters paste mode then leaves it
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
-" Fix c-space
-"====================================================
-"
-" COLOR
-"====================================================
-" set cc=140
-" hi ColorColumn ctermbg=grey
-
-"====================================================
-
+" ------------------------------------------------------------
 " Add epub reading capability
+" ------------------------------------------------------------
 au BufReadCmd   *.epub      call zip#Browse(expand("<amatch>"))
+au BufNewFile,BufRead *.cpp set syntax=cpp11
 
+" ------------------------------------------------------------
 " Other custom mappings
+" ------------------------------------------------------------
+let g:EasyMotion_leader_key = '<space>'
 nnoremap gm :call cursor(0, len(getline('.'))/2)<cr>
 nnoremap gM 50%
 nnoremap gG 50%
-let g:EasyMotion_leader_key = '<space>'
 nmap g<space> H<space>f<space>
 nnoremap S :w<cr>
 nnoremap gS :wall<cr>
 nnoremap ZS :wq<cr>
 inoremap <c-space> <space>i
 
-" Insert mode
+" ------------------------------------------------------------
 " Alts
+" ------------------------------------------------------------
 imap <silent> <ESC>f <C-o>e
 imap <silent> <ESC>b <C-o>b
 imap <silent> <ESC>d <C-o>de
+noremap <ESC>p <C-u>
+noremap <ESC>n <C-d>
+inoremap <ESC>p <C-o><C-u>
+inoremap <ESC>n <C-o><C-d>
+
+" ------------------------------------------------------------
+" Insert mode
+" ------------------------------------------------------------
 imap <silent> <C-f> <C-o>l
 imap <silent> <C-b> <C-o>h
 imap <silent> <C-d> <C-o>dl
@@ -43,32 +47,33 @@ imap <silent> <C-v> <f5><C-d><f5>
 imap <silent> <C-l> <C-o><C-l><C-h>
 inoremap <silent> <C-y> <C-r>+
 
-" Normal AND UNMAPPED
-"map <silent> <C-s> :w<cr>
+" ------------------------------------------------------------
+" Normal
+" ------------------------------------------------------------
 map <silent> <C-q> l
 map <silent> <C-m> l
 vnoremap <C-p> mzdhP
 vnoremap <C-n> dp
 
-" Page up page down
-noremap <ESC>p <C-u>
-noremap <ESC>n <C-d>
-inoremap <ESC>p <C-o><C-u>
-inoremap <ESC>n <C-o><C-d>
 
+" ------------------------------------------------------------
+" Unmapped
+" ------------------------------------------------------------
 " map <silent> ; l " HAVEN'T MAPPED IT BECAUSE IT COULD BE ANNOYING
 " nmap <silent> <c-a> <>
 " imap <silent> <a-u> <c-w>
 " imap <silent> <c-y> <c-o><c-y>
 " imap <silent> <c-y> <c-o><c-y>
 
+" ------------------------------------------------------------
 " Disable help key
+" ------------------------------------------------------------
 nmap <F1> :echo<CR>
 imap <F1> <C-o>:echo<CR>
 
-" -----------------------------------------------------------------------
+" ------------------------------------------------------------
 " NetRW
-" -----------------------------------------
+" ------------------------------------------------------------
 " Toggle Vexplore with Ctrl-S
 function! ToggleVExplorer()
   if exists("t:expl_buf_num")

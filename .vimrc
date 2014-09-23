@@ -43,7 +43,7 @@ imap <silent> <C-a> <C-o>1\|
 imap <silent> <C-n> <C-o>j
 imap <silent> <C-p> <C-o>k
 imap <silent> <C-k> <C-o>d$
-imap <silent> <C-v> <f5><C-d><f5>
+imap <silent> <C-s> <f5><C-d><f5>
 imap <silent> <C-l> <C-o><C-l><C-h>
 inoremap <silent> <C-y> <C-r>+
 

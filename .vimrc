@@ -2,6 +2,10 @@
 " TODO Make map that enters paste mode then leaves it
 """""""""""""""""""""""""""""""""""""""""""""""""""""
 
+" Change the hilight colors to be more readable
+hi SpellBad ctermfg=black
+hi ColorColumn ctermbg=darkgrey
+
 " ------------------------------------------------------------
 " Add epub reading capability
 " ------------------------------------------------------------
@@ -20,7 +24,6 @@ nnoremap S :w<cr>
 nnoremap gS :wall<cr>
 nnoremap ZS :wq<cr>
 inoremap <c-space> <space>i
-
 " ------------------------------------------------------------
 " Alts
 " ------------------------------------------------------------
@@ -29,8 +32,10 @@ imap <silent> <ESC>b <C-o>b
 imap <silent> <ESC>d <C-o>de
 noremap <ESC>p <C-u>
 noremap <ESC>n <C-d>
-inoremap <ESC>p <C-o><C-u>
-inoremap <ESC>n <C-o><C-d>
+"inoremap <ESC>p <C-o><C-u>
+"inoremap <ESC>n <C-o><C-d>
+inoremap <ESC>p <C-p>
+inoremap <ESC>n <C-n>
 
 " ------------------------------------------------------------
 " Insert mode
@@ -94,7 +99,7 @@ function! ToggleVExplorer()
   endif
 endfunction
 
-noremap <silent> <c-s> :call ToggleVExplorer()<CR>
+"noremap <silent> <c-s> :call ToggleVExplorer()<CR>
 " -----------------------------------------------------------------------
 
 " Hit enter in the file browser to open the selected
